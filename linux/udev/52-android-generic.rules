@@ -1,0 +1,9 @@
+# Универсальное правило для ADB-интерфейса неизвестных производителей.
+# AOSP-файл 51-android.rules знает только популярные вендоров; у китайских
+# головных устройств idVendor часто не совпадает, поэтому ловим сам интерфейс
+# ADB (class ff / subclass 42 / protocol 01).
+
+SUBSYSTEM=="usb", ATTR{bInterfaceClass}=="ff", ATTR{bInterfaceSubClass}=="42", ATTR{bInterfaceProtocol}=="01", TAG+="uaccess", GROUP="adbusers", MODE="0660", SYMLINK+="android_adb"
+
+# То же для режима fastboot (не использовать без необходимости)
+SUBSYSTEM=="usb", ATTR{bInterfaceClass}=="ff", ATTR{bInterfaceSubClass}=="42", ATTR{bInterfaceProtocol}=="03", TAG+="uaccess", GROUP="adbusers", MODE="0660", SYMLINK+="android_fastboot"
